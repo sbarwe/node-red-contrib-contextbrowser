@@ -1,0 +1,18 @@
+{
+	"contextbrowser": {
+		"sidebar": {
+			"label": "contextbrowser",
+			"name": "Context Browser"
+		},
+		"label": {
+			"refresh": "Refresh",
+			"properties": "Properties",
+			"contextproperties": "Context properties"
+		},
+		"tabs-label": {
+			"node": "Node",
+			"flow": "Flow",
+			"global": "Global"
+		}
+	}
+}

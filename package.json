@@ -1,0 +1,32 @@
+{
+	"name": "node-red-contrib-contextbrowser",
+	"version": "0.0.1",
+	"description": "A node-red node to browse context variables.",
+	"author": {
+		"name": "Sebastian Barwe",
+		"email": "sebastian.barwe@gmail.com"
+	},
+	"license": "Apache2",
+	"keywords": [
+		"context",
+		"debug",
+		"inspection"
+	],
+	"bugs": {
+		"url": "https://github.com/sbarwe/node-red-contrib-contextbrowser/issues"
+	},
+	"homepage": "https://github.com/sbarwe/node-red-contrib-contextbrowser",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sbarwe/node-red-contrib-contextbrowser.git"
+	},
+	"node-red": {
+		"version": ">=0.16.0",
+		"nodes": {
+			"contextbrowser": "contextbrowser.js"
+		}
+	},
+	"dependencies": {
+	
+	}
+}
