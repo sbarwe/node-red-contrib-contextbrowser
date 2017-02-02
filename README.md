@@ -36,7 +36,7 @@ Ey context for node, flow and the global context refresh individually.
 # Examples
 You can load an example flow from the node-red examples menu, which will show you how you hide data from the contextbrowser by using the get/set operations of context and how to create intermediate debugging properties which are browsable.
 
-![Contextbrowser in action](contextbrowser.png)
+![Contextbrowser in action](https://github.com/sbarwe/node-red-contrib-contextbrowser/blob/master/contextbrowser.gif?raw=true)
 	
 	
 # Changelog
