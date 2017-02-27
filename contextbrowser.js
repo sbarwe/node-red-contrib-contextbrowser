@@ -30,10 +30,21 @@ module.exports = function (RED) {
     var t = {};
     var keys = context.getKeys();
     var i = keys.length;
+    var k, v, j;
     while (i--) {
-      var k = keys[i];
-      t[k] = context.get(k);
+      k = keys[i];
+      v = context.get(k);
+      if (v && {}.toString.call(v) === '[object Function]')
+        continue;
+
+      try {
+        j = JSON.stringify(v);
+        t[k] = JSON.parse(j);
+      } catch(err) {
+        t[k] = "Exception: " + err;
+      }
     }
+    
     return t;
   }
 

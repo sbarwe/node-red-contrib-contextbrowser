@@ -139,7 +139,8 @@
 		var selectedNode = null;
 		var selectedWorkspace = RED.nodes.workspace(RED.workspaces.active());
 		var selectedTab = null;
-
+		var content = $($('script[type="text/x-red"][data-template-name="contextbrowser-sidebar"]').i18n().html());
+		var tabs = null;
 
 		function nodeSelectEventHandler(sn) {
 			if (sn && sn.nodes && sn.nodes.length > 0) {
@@ -156,6 +157,10 @@
 		function flowSelectEventHandler(ws) {
 			selectedWorkspace = RED.nodes.workspace(ws.workspace);
 			// var activeWorkspace = RED.workspaces.active();
+		}
+
+		function sidebarresizeEventHandler() {
+			tabs.resize();
 		}
 
 		function createPropertyTableRows(obj, tableBody) {
@@ -204,7 +209,8 @@
 			return globalContextBrowserNode;
 		}
 
-		var content = $($('script[type="text/x-red"][data-template-name="contextbrowser-sidebar"]').i18n().html());
+
+
 
 		function loadContextData(url, success) {
 			ensureContextBrowserNode();
@@ -243,7 +249,7 @@
 				table.find("#node-context-table-name").text(node.name);
 				table.find("#node-context-table-type").text(node.type);
 				table.find("#node-context-table-id").text(node.id);
-				table.find("#node-context-table-timestamp").text((new Date()).getTime().valueOf());
+				table.find("#node-context-table-timestamp").text(new Date().toString());
 				createPropertyTableRows(resp, tbody);
 			});
 		}
@@ -257,7 +263,7 @@
 				table.find("#flow-context-table-name").text(workspace.label);
 				table.find("#flow-context-table-type").text(workspace.type);
 				table.find("#flow-context-table-id").text(workspace.id);
-				table.find("#flow-context-table-timestamp").text((new Date()).getTime().valueOf());
+				table.find("#flow-context-table-timestamp").text(new Date().toString());
 				createPropertyTableRows(resp, tbody);
 			});
 		}
@@ -271,7 +277,7 @@
 				table.find("#global-context-table-name").text("-");
 				table.find("#global-context-table-type").text("-");
 				table.find("#global-context-table-id").text("-");
-				table.find("#global-context-table-timestamp").text(new Date().getTime().valueOf());
+				table.find("#global-context-table-timestamp").text(new Date().toString());
 				createPropertyTableRows(resp, tbody);
 			});
 		}
@@ -302,6 +308,8 @@
 			}
 		}
 
+
+
 		content.find('#contextbrowser-refresh').click(refresh);
 
 		//RED.keyboard.add("*",/* d */ 68,{ctrl:true, shift:true},function() { window.open(document.location.protocol+"//"+document.location.host+RED.settings.httpNodeRoot+uip) });
@@ -319,22 +327,13 @@
 			onpaletteremove: function () {
 				RED.sidebar.removeTab("sidebar-contextbrowser");
 				RED.events.off("deploy", deployEventHandler);
-				//RED.events.off("sidebar:resize",editSaveEventHandler);
+				RED.events.off("sidebar:resize", sidebarresizeEventHandler);
 				RED.events.off("view:selection-changed", nodeSelectEventHandler);
 				RED.events.off("workspace:change", flowSelectEventHandler);
 
 			},
 			onpaletteadd: function () {
 				//setup context sidebar tab
-
-
-
-				RED.events.on("deploy", deployEventHandler);
-				// RED.events.on("sidebar:resize",editSaveEventHandler);
-				RED.events.on("view:selection-changed", nodeSelectEventHandler);
-				RED.events.on("workspace:change", flowSelectEventHandler);
-
-
 
 				RED.sidebar.addTab({
 					id: "sidebar-contextbrowser",
@@ -348,7 +347,7 @@
 					}
 				});
 
-				var tabs = RED.tabs.create({
+				tabs = RED.tabs.create({
 					id: "node-contextbrowser-tabs",
 					onchange: function (tab) {
 						selectedTab = tab;
@@ -369,19 +368,18 @@
 					label: this._("contextbrowser.tabs-label.node")
 				});
 
-
-
-				//createPropertyTableRows({ "a": 1, "b": [1,2,3,4,5], "c": { "subnavi" : "string" } 
-				//}, content.find('#flow-context-table'));
-
 				// Need to wait for it to be rendered before the sizing of the tabs
 				// can be properly calculated
 				setTimeout(function () {
 					tabs.resize();
 				}, 500);
 
-			},
+				RED.events.on("deploy", deployEventHandler);
+				RED.events.on("sidebar:resize", sidebarresizeEventHandler);
+				RED.events.on("view:selection-changed", nodeSelectEventHandler);
+				RED.events.on("workspace:change", flowSelectEventHandler);
 
+			},
 			oneditprepare: function () {
 
 				var node = this;
@@ -398,9 +396,6 @@
 
 
 			},
-
-
-
 		});
 	})(jQuery);
 </script>
