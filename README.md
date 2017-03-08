@@ -2,6 +2,8 @@
 Browse the current global, flow and node context in the sidebar.
 The addon is for node and function node developers to support debugging and runtime monitoring.
 
+![Contextbrowser in action](https://github.com/sbarwe/node-red-contrib-contextbrowser/blob/master/contextbrowser.gif?raw=true)
+
 # Features
 
 Sometimes it is not appropriate to print a debug message, write to console and to flood it.
@@ -42,12 +44,10 @@ obj.getKeys = function() { return Object.getOwnPropertyNames(data); }
 
 Select a node on a workspace and open the "Context Browser" sidebar via the sidebar menu
 Now press the refresh button in the head of the sidebar pane to retrieve the current context data from  the runtime.
-Ey context for node, flow and the global context refresh individually.
+Each context for node, flow and the global context refresh individually.
 
 # Examples
 You can load an example flow from the node-red examples menu, which will show you how you hide data from the contextbrowser by using the get/set operations of context and how to create intermediate debugging properties which are browsable.
-
-![Contextbrowser in action](https://github.com/sbarwe/node-red-contrib-contextbrowser/blob/master/contextbrowser.gif?raw=true)
 	
 # Permissions
 * ```contextbrowser.flow.read``` for ```/contextbrowser/flow/:id``` 
@@ -60,11 +60,15 @@ You can load an example flow from the node-red examples menu, which will show yo
 
 ## Version 0.0.1
 First release for testing
+## Version 0.0.2
+* ignore function properties in the context (will skip them from jsonify)
+## Version 0.0.3
+* changed timestamp of context refresh from ticks to locale string
 
 # Feature Requests
 
 * auto refresh the selected context tab in a given interval
 * notify user that context data is old if the flow/affected node was deployed
-* use a list of property names for a node-id, flow-id and global contet to access data handled with context.get/set methods
+* use settings.js to configure property name which should be skipped from serialization (like require'd packages)
 * make the context property editable from the context browser 
 * mark persisted context properties (if feature is available in node-red, extend node-red-contrib-config with this feature)
