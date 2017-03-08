@@ -60,8 +60,10 @@ You can load an example flow from the node-red examples menu, which will show yo
 
 ## Version 0.0.1
 First release for testing
+
 ## Version 0.0.2
 * ignore function properties in the context (will skip them from jsonify)
+
 ## Version 0.0.3
 * changed timestamp of context refresh from ticks to locale string
 
