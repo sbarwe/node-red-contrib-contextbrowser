@@ -36,9 +36,12 @@ Follow the [node installation guide](https://nodered.org/docs/getting-started/ad
 
 [Currently node-red does not support to get the used keys of a context](https://groups.google.com/forum/#!topic/node-red/H8-sSkBNyUM), so you have to patch node-red first.
 You need to patch [./red/runtime/nodes/context.js near line 30](https://github.com/node-red/node-red/blob/master/red/runtime/nodes/context.js#L30) and extend obj with:
-```
+
+```javascript
 obj.getKeys = function() { return Object.getOwnPropertyNames(data); }
 ```
+
+If you installed node RED globally you should find the file here: `/usr/lib/node_modules/node-red/red/runtime/nodes/context.js` otherwise in your local `node_modules` path 
 
 # Usage
 
@@ -46,13 +49,15 @@ Select a node on a workspace and open the "Context Browser" sidebar via the side
 Now press the refresh button in the head of the sidebar pane to retrieve the current context data from  the runtime.
 Each context for node, flow and the global context refresh individually.
 
+[Peter Scargill made a blog post as well what you can to with the nodes config and contextbrowser](http://tech.scargill.net/node-red-global-flow-and-context/)
+
 # Examples
 You can load an example flow from the node-red examples menu, which will show you how you hide data from the contextbrowser by using the get/set operations of context and how to create intermediate debugging properties which are browsable.
 	
 # Permissions
-* ```contextbrowser.flow.read``` for ```/contextbrowser/flow/:id``` 
-* ```contextbrowser.global.read``` for ```/contextbrowser/global``` 
-* ```contextbrowser.node.read``` for ```/contextbrowser/node/:id```
+* ```contextbrowser.flow.read``` for ```./contextbrowser/flow/:id``` 
+* ```contextbrowser.global.read``` for ```./contextbrowser/global``` 
+* ```contextbrowser.node.read``` for ```./contextbrowser/node/:id```
 
 # Changelog
 
@@ -74,3 +79,4 @@ First release for testing
 * use settings.js to configure property name which should be skipped from serialization (like require'd packages)
 * make the context property editable from the context browser 
 * mark persisted context properties (if feature is available in node-red, extend node-red-contrib-config with this feature)
+
