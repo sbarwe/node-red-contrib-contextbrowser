@@ -108,7 +108,7 @@
 								<td>Name</td>
 								<td>&nbsp;<span id="node-context-table-name" /></td>
 							</tr>
-							<tr>
+						<tr>
 								<td>Type</td>
 								<td>&nbsp;<span id="node-context-table-type" /></td>
 							</tr>
@@ -141,6 +141,10 @@
 		var selectedTab = null;
 		var content = $($('script[type="text/x-red"][data-template-name="contextbrowser-sidebar"]').i18n().html());
 		var tabs = null;
+
+		function currentTimestamp() {
+			return new Date().toLocaleString(undefined, { month: '2-digit', day: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+		}
 
 		function nodeSelectEventHandler(sn) {
 			if (sn && sn.nodes && sn.nodes.length > 0) {
@@ -248,8 +252,8 @@
 				tbody.empty();
 				table.find("#node-context-table-name").text(node.name);
 				table.find("#node-context-table-type").text(node.type);
-				table.find("#node-context-table-id").text(node.id);
-				table.find("#node-context-table-timestamp").text(new Date().toLocaleString(undefined, { hour12: false }));
+				table.find("#node-context-table-id").html('<a href="contextbrowser/node/'+ node.id+'" target="_blank">'+node.id+'</a>');
+				table.find("#node-context-table-timestamp").text(currentTimestamp());
 				createPropertyTableRows(resp, tbody);
 			});
 		}
@@ -262,8 +266,8 @@
 				tbody.empty();
 				table.find("#flow-context-table-name").text(workspace.label);
 				table.find("#flow-context-table-type").text(workspace.type);
-				table.find("#flow-context-table-id").text(workspace.id);
-				table.find("#flow-context-table-timestamp").text(new Date().toLocaleString(undefined, { hour12: false }));
+				table.find("#flow-context-table-id").html('<a href="contextbrowser/flow/'+ workspace.id+'" target="_blank">'+workspace.id+'</a>');
+				table.find("#flow-context-table-timestamp").text(currentTimestamp());
 				createPropertyTableRows(resp, tbody);
 			});
 		}
@@ -273,11 +277,12 @@
 			var tbody = content.find('#global-context-table-tbody');
 
 			loadContextData("contextbrowser/global", function (resp) {
+				console.log(resp);
 				tbody.empty();
 				table.find("#global-context-table-name").text("-");
 				table.find("#global-context-table-type").text("-");
-				table.find("#global-context-table-id").text("-");
-				table.find("#global-context-table-timestamp").text(new Date().toLocaleString(undefined, { hour12: false }));
+				table.find("#global-context-table-id").html('<a href="contextbrowser/global" target="_blank">Open</a>');
+				table.find("#global-context-table-timestamp").text(currentTimestamp());
 				createPropertyTableRows(resp, tbody);
 			});
 		}
@@ -342,10 +347,19 @@
 					content: content,
 					closeable: true,
 					disableOnEdit: true,
-					onchange: function () {
+					onchange: function() { 
 
-					}
+						// Need to wait for it to be rendered before the sizing of the tabs
+						// can be properly calculated
+
+						setTimeout(sidebarresizeEventHandler, 0);
+					 }
 				});
+				
+				RED.events.on("deploy", deployEventHandler);
+				RED.events.on("sidebar:resize", sidebarresizeEventHandler);
+				RED.events.on("view:selection-changed", nodeSelectEventHandler);
+				RED.events.on("workspace:change", flowSelectEventHandler);
 
 				tabs = RED.tabs.create({
 					id: "node-contextbrowser-tabs",
@@ -368,17 +382,6 @@
 					label: this._("contextbrowser.tabs-label.node")
 				});
 
-				// Need to wait for it to be rendered before the sizing of the tabs
-				// can be properly calculated
-				setTimeout(function () {
-					tabs.resize();
-				}, 500);
-
-				RED.events.on("deploy", deployEventHandler);
-				RED.events.on("sidebar:resize", sidebarresizeEventHandler);
-				RED.events.on("view:selection-changed", nodeSelectEventHandler);
-				RED.events.on("workspace:change", flowSelectEventHandler);
-
 			},
 			oneditprepare: function () {
 
@@ -398,4 +401,5 @@
 			},
 		});
 	})(jQuery);
+
 </script>

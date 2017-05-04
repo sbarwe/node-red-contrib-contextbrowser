@@ -30,18 +30,10 @@ on request for debugging purposes. It will give you the following benefits
 
 # Install
 
-*The node is currently in alpha-phase*
-
 Follow the [node installation guide](https://nodered.org/docs/getting-started/adding-nodes) to the npm-package node-red-contrib-contextbrowser.
-
-[Currently node-red does not support to get the used keys of a context](https://groups.google.com/forum/#!topic/node-red/H8-sSkBNyUM), so you have to patch node-red first.
-You need to patch [./red/runtime/nodes/context.js near line 30](https://github.com/node-red/node-red/blob/master/red/runtime/nodes/context.js#L30) and extend obj with:
-
-```javascript
-obj.getKeys = function() { return Object.getOwnPropertyNames(data); }
+```bash
+npm install node-red-contrib-contextbrowser
 ```
-
-If you installed node RED globally you should find the file here: `/usr/lib/node_modules/node-red/red/runtime/nodes/context.js` otherwise in your local `node_modules` path 
 
 # Usage
 
@@ -50,6 +42,8 @@ Now press the refresh button in the head of the sidebar pane to retrieve the cur
 Each context for node, flow and the global context refresh individually.
 
 [Peter Scargill made a blog post as well what you can to with the nodes config and contextbrowser](http://tech.scargill.net/node-red-global-flow-and-context/)
+
+*Note: Context variables beginning with an underscore will be ignored (private variables)*
 
 # Examples
 You can load an example flow from the node-red examples menu, which will show you how you hide data from the contextbrowser by using the get/set operations of context and how to create intermediate debugging properties which are browsable.
@@ -63,20 +57,27 @@ You can load an example flow from the node-red examples menu, which will show yo
 
 [![NPM](https://nodei.co/npm/node-red-contrib-contextbrowser.png)](https://nodei.co/npm/node-red-contrib-contextbrowser/)
 
-## Version 0.0.1
-First release for testing
-
-## Version 0.0.2
-* ignore function properties in the context (will skip them from jsonify)
+## Version 0.0.4
+* Getting context keys is supported starting with Node-RED 0.17. Publishing to flows.node-red.org now.
+* ignoring keys starting with underscore (e.g. _myprivateVar)
+* you can open the context in a dedicated browser window
+* fix: correct size of tabs
 
 ## Version 0.0.3
 * changed timestamp of context refresh from ticks to locale string
 
-# Feature Requests
+## Version 0.0.2
+* ignore function properties in the context (will skip them from jsonify)
 
+## Version 0.0.1
+First release for testing
+
+# TODOs / Ideas
+* get only a specific part of the context (like a filter). Helpful when you have bigger structures
+* provide a list of Ids which will not be accessible by contextbrowser in settings.js
+* test with alternative httpAdmin routes and authentication
+* remove node-red-contrib-config from example
 * auto refresh the selected context tab in a given interval
 * notify user that context data is old if the flow/affected node was deployed
-* use settings.js to configure property name which should be skipped from serialization (like require'd packages)
-* make the context property editable from the context browser 
 * mark persisted context properties (if feature is available in node-red, extend node-red-contrib-config with this feature)
 

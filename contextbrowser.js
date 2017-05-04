@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Sebastian Barwe
+ * Copyright 2017 Sebastian Barwe (sebastian.barwe@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,15 @@
 module.exports = function (RED) {
   "use strict";
 
-  function ContextBrowser(config) {
-    RED.nodes.createNode(this, config);
+  const semver = require('semver');
 
+  function ContextBrowser(config) {
+    
+    if (this.context.keys === undefined) {
+      RED.log.err("node-red-contrib-contextbrowser needs Node-RED 0.17+ or that you patch NR (see section Install in README.md).");
+    }
+    else
+      RED.nodes.createNode(this, config);
   }
 
   RED.nodes.registerType("contextbrowser", ContextBrowser);
@@ -28,11 +34,13 @@ module.exports = function (RED) {
   // needs patch  obj.getKeys = function() { return Object.getOwnPropertyNames(data); } @ https://github.com/node-red/node-red/blob/master/red/runtime/nodes/context.js#L30
   function copycontext(context) {
     var t = {};
-    var keys = context.getKeys();
+    var keys =  context.keys();
     var i = keys.length;
     var k, v, j;
     while (i--) {
       k = keys[i];
+      if (k[0] == '_')
+        continue;
       v = context.get(k);
       if (v && {}.toString.call(v) === '[object Function]')
         continue;
