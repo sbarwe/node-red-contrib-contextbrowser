@@ -38,7 +38,7 @@
 					<table class="node-info" id="flow-context-table">
 						<thead>
 							<tr class="blank">
-								<td colspan="2"><span class="node-info-property-header" />Info<span/></td>
+								<td colspan="2"><span class="node-info-property-header" /><b>Info</b><span/></td>
 							</tr>
 							<tr>
 								<td>Name</td>
@@ -57,7 +57,7 @@
 								<td>&nbsp;<span id="flow-context-table-timestamp" /></td>
 							</tr>
 							<tr class="blank">
-								<td colspan="2"><span class="node-info-property-header" data-i18n="contextbrowser.label.contextproperties">Context properties</span></td>
+								<td colspan="2"><b><span class="node-info-property-header" data-i18n="contextbrowser.label.contextproperties">Context properties</span></b></td>
 							</tr>
 						</thead>
 						<tbody id="flow-context-table-tbody">
@@ -70,7 +70,7 @@
 					<table class="node-info" id="global-context-table">
 						<thead>
 							<tr class="blank">
-								<td colspan="2"><span class="node-info-property-header" />Info<span/></td>
+								<td colspan="2"><span class="node-info-property-header" /><b>Info</b><span/></td>
 							</tr>
 							<tr>
 								<td>Name</td>
@@ -89,7 +89,7 @@
 								<td>&nbsp;<span id="global-context-table-timestamp" /></td>
 							</tr>
 							<tr class="blank">
-								<td colspan="2"><span class="node-info-property-header" data-i18n="contextbrowser.label.contextproperties">Context properties</span></td>
+								<td colspan="2"><b><span class="node-info-property-header" data-i18n="contextbrowser.label.contextproperties">Context properties</span></b></td>
 							</tr>
 						</thead>
 						<tbody id="global-context-table-tbody">
@@ -102,7 +102,7 @@
 					<table class="node-info" id="node-context-table">
 						<thead>
 							<tr class="blank">
-								<td colspan="2"><span class="node-info-property-header" />Info<span/></td>
+								<td colspan="2"><span class="node-info-property-header" /><b>Info</b><span/></td>
 							</tr>
 							<tr>
 								<td>Name</td>
@@ -121,7 +121,7 @@
 								<td>&nbsp;<span id="node-context-table-timestamp" /></td>
 							</tr>
 							<tr class="blank">
-								<td colspan="2"><span class="node-info-property-header" data-i18n="contextbrowser.label.contextproperties">Context properties</span></td>
+								<td colspan="2"><b><span class="node-info-property-header" data-i18n="contextbrowser.label.contextproperties">Context properties</span></b></td>
 							</tr>
 						</thead>
 						<tbody id="node-context-table-tbody">
@@ -167,14 +167,17 @@
 			tabs.resize();
 		}
 
-		function createPropertyTableRows(obj, tableBody) {
+		function createPropertyTableRows(obj, tableBody, sourceNode) {
 			if (obj && tableBody) {
 				for (var n in obj) {
 					if (n != "name" && obj.hasOwnProperty(n)) {
 						var val = obj[n];
 						var type = typeof val;
 						var propRow = $('<tr class="node-info-property-row"><td>' + n + "</td><td></td></tr>").appendTo(tableBody);
-						RED.utils.createObjectElement(val).appendTo(propRow.children()[1]);
+						 // RED.utils.createObjectElement(obj,key,typeHint,hideKey,path,sourceId,rootPath,expandPaths) 
+						 // cannot pass val to createObjectElement because path/rootPath would be "" which breaks pinning feature 
+						var el = $('<span class="debug-message-payload"></span>').appendTo(propRow.children()[1]);
+						RED.utils.createObjectElement(val, null, type, false, n,  (sourceNode&&sourceNode.id)+n, n, [n]).appendTo(el);
 					}
 				}
 			} else
@@ -254,7 +257,7 @@
 				table.find("#node-context-table-type").text(node.type);
 				table.find("#node-context-table-id").html('<a href="contextbrowser/node/'+ node.id+'" target="_blank">'+node.id+'</a>');
 				table.find("#node-context-table-timestamp").text(currentTimestamp());
-				createPropertyTableRows(resp, tbody);
+				createPropertyTableRows(resp, tbody, node);
 			});
 		}
 
@@ -268,7 +271,7 @@
 				table.find("#flow-context-table-type").text(workspace.type);
 				table.find("#flow-context-table-id").html('<a href="contextbrowser/flow/'+ workspace.id+'" target="_blank">'+workspace.id+'</a>');
 				table.find("#flow-context-table-timestamp").text(currentTimestamp());
-				createPropertyTableRows(resp, tbody);
+				createPropertyTableRows(resp, tbody, workspace);
 			});
 		}
 
@@ -277,13 +280,12 @@
 			var tbody = content.find('#global-context-table-tbody');
 
 			loadContextData("contextbrowser/global", function (resp) {
-				console.log(resp);
 				tbody.empty();
 				table.find("#global-context-table-name").text("-");
 				table.find("#global-context-table-type").text("-");
 				table.find("#global-context-table-id").html('<a href="contextbrowser/global" target="_blank">Open</a>');
 				table.find("#global-context-table-timestamp").text(currentTimestamp());
-				createPropertyTableRows(resp, tbody);
+				createPropertyTableRows(resp, tbody, {id:'globalcontext'});
 			});
 		}
 
