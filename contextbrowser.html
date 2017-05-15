@@ -234,7 +234,7 @@
 				},
 				error: function (jqXHR, textStatus, errorThrown) {
 					if (jqXHR.status == 404) {
-						RED.notify(textStatus, "error");
+						RED.notify("Node or flow id not found", "error");
 					} else if (jqXHR.status == 500) {
 						RED.notify("Exception getting context data. See logs of the runtime.", "error");
 					} else if (jqXHR.status == 0) {
