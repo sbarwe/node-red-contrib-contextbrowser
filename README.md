@@ -31,6 +31,9 @@ on request for debugging purposes. It will give you the following benefits
 # Install
 
 Follow the [node installation guide](https://nodered.org/docs/getting-started/adding-nodes) to the npm-package node-red-contrib-contextbrowser.
+
+Note: This node requires a Node-RED version of at least 0.17.
+
 ```bash
 npm install node-red-contrib-contextbrowser
 ```
@@ -58,10 +61,11 @@ You can load an example flow from the node-red examples menu, which will show yo
 [![NPM](https://nodei.co/npm/node-red-contrib-contextbrowser.png)](https://nodei.co/npm/node-red-contrib-contextbrowser/)
 
 ## Version 0.0.4
-* Getting context keys is supported starting with Node-RED 0.17. Publishing to flows.node-red.org now.
+* Getting context keys is supported starting with Node-RED 0.17.
 * ignoring keys starting with underscore (e.g. _myprivateVar)
 * you can open the context in a dedicated browser window
 * fix: correct size of tabs
+* removed node-red-contrib-config from example
 
 ## Version 0.0.3
 * changed timestamp of context refresh from ticks to locale string
@@ -76,7 +80,6 @@ First release for testing
 * get only a specific part of the context (like a filter). Helpful when you have bigger structures
 * provide a list of Ids which will not be accessible by contextbrowser in settings.js
 * test with alternative httpAdmin routes and authentication
-* remove node-red-contrib-config from example
 * auto refresh the selected context tab in a given interval
 * notify user that context data is old if the flow/affected node was deployed
 * mark persisted context properties (if feature is available in node-red, extend node-red-contrib-config with this feature)

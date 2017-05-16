@@ -9,7 +9,7 @@
 			"properties": "Properties",
 			"contextproperties": "Context properties"
 		},
-		"tabs-label": {
+		"tabs-label": { 
 			"node": "Node",
 			"flow": "Flow",
 			"global": "Global"

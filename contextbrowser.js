@@ -31,7 +31,6 @@ module.exports = function (RED) {
   RED.nodes.registerType("contextbrowser", ContextBrowser);
 
   // prepare context object for serialization
-  // needs patch  obj.getKeys = function() { return Object.getOwnPropertyNames(data); } @ https://github.com/node-red/node-red/blob/master/red/runtime/nodes/context.js#L30
   function copycontext(context) {
     var t = {};
     var keys =  context.keys();
