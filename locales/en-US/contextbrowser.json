@@ -18,7 +18,7 @@
 			"notfound" : "Node or flow id not found",
 			"exception": "Exception getting context data. See logs of the runtime.",
 			"noresponse": "No response",
-			"unexpected: "Unexpected error "
+			"unexpected": "Unexpected error "
 		}
 	}
 }
