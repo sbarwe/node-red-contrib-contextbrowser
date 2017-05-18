@@ -17,8 +17,6 @@
 module.exports = function (RED) {
   "use strict";
 
-  const semver = require('semver');
-
   function ContextBrowser(config) {
     
     if (this.context.keys === undefined) {
