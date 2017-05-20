@@ -2,6 +2,9 @@
 Browse the current global, flow and node context in the sidebar.
 The addon is for node and function node developers to support debugging and runtime monitoring.
 
+[![NodeRed](https://img.shields.io/badge/Node--Red-0.17-red.svg)](http://nodered.org)
+
+
 ![Contextbrowser in action](https://github.com/sbarwe/node-red-contrib-contextbrowser/blob/master/contextbrowser.gif?raw=true)
 
 # Features
