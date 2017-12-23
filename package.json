@@ -24,9 +24,11 @@
   "node-red": {
     "version": ">=0.17.0",
     "nodes": {
-      "contextbrowser": "contextbrowser.js"
+      "contextbrowser": "contextbrowser.js",
+      "spy": "spy.js"
     }
   },
   "dependencies": {
+    "object-sizeof": "^1.2.0"
   }
 }

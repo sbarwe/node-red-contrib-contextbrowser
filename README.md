@@ -30,6 +30,29 @@ on request for debugging purposes. It will give you the following benefits
   automated longterm monitoring of node runtime variables and integration into other monitoring solutions
   (like nagios or iacinga)
 
+# Spying on msg
+
+With the `spy`-node you can monitor and inspect `msg`-pass-through between two nodes. 
+The spy node collects the following information and provide them on the local context for inspection with contextbrowser:
+- msg per second
+- msg size per second
+- min/max/avg time between msg
+- last msg and last msg timestamp
+- msg count since reset
+
+The rates are calculated on the counter diffs every 1s.
+The node provides  the following settings:
+- Pass Through: on / off  (incomming `msg` are passed to the output or not) 
+- Statistics: on / off  (calculate statistics and save them to local context)
+
+Note that the statistics will be reset on node's redeployment.
+You can apply the settings without redeployment and reset the statistics from the contextbrowser sidebar when selecting a spy-node or by passing in a `mgs` with property `msg.spy.reset = true` once.
+
+Related work:
+http://flows.nodered.org/node/node-red-contrib-msg-speed
+http://flows.nodered.org/node/node-red-contrib-rate
+
+
 
 # Install
 
@@ -55,13 +78,17 @@ Each context for node, flow and the global context refresh individually.
 You can load an example flow from the node-red examples menu, which will show you how you hide data from the contextbrowser by using the get/set operations of context and how to create intermediate debugging properties which are browsable.
 	
 # Permissions
-* ```contextbrowser.flow.read``` for ```./contextbrowser/flow/:id``` 
-* ```contextbrowser.global.read``` for ```./contextbrowser/global``` 
-* ```contextbrowser.node.read``` for ```./contextbrowser/node/:id```
+* `contextbrowser.flow.read` for `./contextbrowser/flow/:id` 
+* `contextbrowser.global.read` for `./contextbrowser/global` 
+* `contextbrowser.node.read` for `./contextbrowser/node/:id`
 
 # Changelog
 
 [![NPM](https://nodei.co/npm/node-red-contrib-contextbrowser.png)](https://nodei.co/npm/node-red-contrib-contextbrowser/)
+
+## Version 0.0.5
+
+* added spy node to monitor `msg` flow between two nodes, see [Spying on msg](#spying_on_msg)
 
 ## Version 0.0.4
 * Getting context keys is supported starting with Node-RED 0.17.
@@ -86,4 +113,6 @@ First release for testing
 * auto refresh the selected context tab in a given interval
 * notify user that context data is old if the flow/affected node was deployed
 * mark persisted context properties (if feature is available in node-red, extend node-red-contrib-config with this feature)
-
+* spy-node: choose value from context to show per `status` on the node in a given interval or on change.
+* spy-node: change color of the status according to rule (>,>=, ==,  <, <==)
+* Add advanced examples: (use status node to watch for rule exceptions, live visualization of statistics)
